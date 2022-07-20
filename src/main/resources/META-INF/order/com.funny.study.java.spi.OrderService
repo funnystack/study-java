@@ -1,0 +1,2 @@
+cfw=com.funny.study.java.spi.impl.CfwOrderService
+xcds=com.funny.study.java.spi.impl.XcdsOrderService
