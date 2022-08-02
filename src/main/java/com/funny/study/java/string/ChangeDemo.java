@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
  * 通过反射改变不可变的类
  */
 public class ChangeDemo {
-    public static void change(String str) {
+    public static void changeString(String str) {
         if (null == str)
             return;
         try {
@@ -19,7 +19,7 @@ public class ChangeDemo {
         }
     }
 
-    public static void change(Integer num) {
+    public static void changeNumber(Integer num) {
         if (null == num)
             return;
         try {
@@ -35,12 +35,18 @@ public class ChangeDemo {
     public static void main(String[] args) {
         String a = "cat";
         System.out.println("before:a=" + a);
-        change(a);
-        System.out.println("after   :a=" + a);
+        changeString(a);
+        // 输出cat，结论，通过反射不能修改string
+        System.out.println("after:a=" + a);
+        System.out.println(a.hashCode());
         Integer num = 12;
         System.out.println("before:num=" + num);
-        change(num);
+        changeNumber(num);
         System.out.println("after   :num=" + num);
+
+        ChangeDemo changeDemo = new ChangeDemo();
+        System.out.println(changeDemo.hashCode());
+        System.out.println(System.identityHashCode(changeDemo));
     }
 }
 
