@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)// 测试方法平均执行时间
 @OutputTimeUnit(TimeUnit.MILLISECONDS)//
 public class BenchMarkUtils {
+    private static final String RANDOM_STRING = "0123456789";
+    private static Random random = new Random();
     public static void main(String[] args) throws RunnerException {
         // 可以通过注解
 //        Options opt = new OptionsBuilder()
@@ -34,10 +36,10 @@ public class BenchMarkUtils {
         //8491  //1628
         //12175  6551
         //3085  6551
-        //
+        //3047
         long start = System.currentTimeMillis();
         for(int i=0;i<10000000;i++){
-            getUUTraceId();
+            System.out.println(getNewTraceId());
         }
         long end = System.currentTimeMillis();
         System.out.println(end-start);
@@ -50,12 +52,10 @@ public class BenchMarkUtils {
 
     @Benchmark
     public static String getRandomString() {
-        String str = "0123456789";
-        Random random = new Random();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < 12; i++) {
             int number = random.nextInt(10);
-            sb.append(str.charAt(number));
+            sb.append(RANDOM_STRING.charAt(number));
         }
         return sb.toString();
     }
