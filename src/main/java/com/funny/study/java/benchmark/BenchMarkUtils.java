@@ -18,20 +18,29 @@ import java.util.concurrent.TimeUnit;
  */
 @State(Scope.Benchmark) // 每个测试线程一个实例
 @BenchmarkMode(Mode.AverageTime)// 测试方法平均执行时间
-@Fork(0)
-@OutputTimeUnit(TimeUnit.MICROSECONDS)// 输出结果的时间粒度为微秒
+@OutputTimeUnit(TimeUnit.MILLISECONDS)//
 public class BenchMarkUtils {
     public static void main(String[] args) throws RunnerException {
         // 可以通过注解
-        Options opt = new OptionsBuilder()
-                .include(BenchMarkUtils.class.getSimpleName())
-                .warmupIterations(3) // 预热3次
-                .measurementIterations(2).measurementTime(TimeValue.valueOf("1s")) // 运行5次，每次10秒
-                .threads(10) // 10线程并发
-                .forks(2)
-                .build();
-
-        new Runner(opt).run();
+//        Options opt = new OptionsBuilder()
+//                .include(BenchMarkUtils.class.getSimpleName())
+//                .warmupIterations(3) // 预热3次
+//                .measurementIterations(5).measurementTime(TimeValue.valueOf("5s")) // 运行5次，每次10秒
+//                .threads(10) // 10线程并发
+//                .forks(2)
+//                .build();
+//
+//        new Runner(opt).run();
+        //8491  //1628
+        //12175  6551
+        //3085  6551
+        //
+        long start = System.currentTimeMillis();
+        for(int i=0;i<10000000;i++){
+            getUUTraceId();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(end-start);
     }
 
     @Benchmark
@@ -40,22 +49,22 @@ public class BenchMarkUtils {
     }
 
     @Benchmark
-    public static String getRandomString(){
-        String str="0123456789";
-        Random random=new Random();
-        StringBuffer sb=new StringBuffer();
-        for(int i=0;i<12;i++){
-            int number=random.nextInt(10);
+    public static String getRandomString() {
+        String str = "0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < 12; i++) {
+            int number = random.nextInt(10);
             sb.append(str.charAt(number));
         }
         return sb.toString();
     }
 
-    @Benchmark
+//    @Benchmark
     public static String getNewTraceId() {
-        return LocalHostUtils.getIpFromString(LocalHostUtils.getLocalIp()) + System.currentTimeMillis() + RandomStringUtils.randomNumeric(12);
+        return LocalHostUtils.getIpFromString(LocalHostUtils.getLocalIp()) + System.currentTimeMillis() + getRandomString();
     }
-    @Benchmark
+//    @Benchmark
     public static String getUUTraceId() {
         return java.util.UUID.randomUUID().toString().replaceAll("-", "");
     }
